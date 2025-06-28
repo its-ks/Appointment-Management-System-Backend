@@ -1,0 +1,226 @@
+{
+  "info": {
+    "_postman_id": "d1e1f1c2-1234-5678-9101-abcdefabcdef",
+    "name": "Appointment Management System API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "API flow for student and professor appointment management system with complete E2E workflow."
+  },
+  "item": [
+    {
+      "name": "Student A1 Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"a1@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/student/slogin",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "student", "slogin"]
+        },
+        "description": "Authenticate Student A1 to access the appointment system"
+      },
+      "response": []
+    },
+    {
+      "name": "Professor P1 Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"p1@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/professor/plogin",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "professor", "plogin"]
+        },
+        "description": "Authenticate Professor P1 to access the appointment system"
+      },
+      "response": []
+    },
+    {
+      "name": "Professor P1 Set Availability",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{professorP1_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"timeSlots\": [\n    \"2024-07-01T10:00:00.000Z\",\n    \"2024-07-01T11:00:00.000Z\"\n  ]\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/availability",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["availability"]
+        },
+        "description": "Professor P1 specifies available time slots for appointments"
+      },
+      "response": []
+    },
+    {
+      "name": "Student A1 View Professor P1 Availability",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{studentA1_token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/availability/{{professorP1_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["availability", "{{professorP1_id}}"]
+        },
+        "description": "Student A1 views available time slots for Professor P1"
+      },
+      "response": []
+    },
+    {
+      "name": "Student A1 Book Appointment (T1)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{studentA1_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"professorId\": \"{{professorP1_id}}\",\n  \"time\": \"2024-07-01T10:00:00.000Z\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/appointment",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["appointment"]
+        },
+        "description": "Student A1 books an appointment with Professor P1 for time T1"
+      },
+      "response": []
+    },
+    {
+      "name": "Student A2 Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"a2@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/student/slogin",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "student", "slogin"]
+        },
+        "description": "Authenticate Student A2 to access the appointment system"
+      },
+      "response": []
+    },
+    {
+      "name": "Student A2 Book Appointment (T2)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{studentA2_token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"professorId\": \"{{professorP1_id}}\",\n  \"time\": \"2024-07-01T11:00:00.000Z\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/appointment",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["appointment"]
+        },
+        "description": "Student A2 books an appointment with Professor P1 for time T2"
+      },
+      "response": []
+    },
+    {
+      "name": "Professor P1 Cancel Appointment with Student A1",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{professorP1_token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/appointment/{{appointmentA1_id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["appointment", "{{appointmentA1_id}}"]
+        },
+        "description": "Professor P1 cancels the appointment with Student A1"
+      },
+      "response": []
+    },
+    {
+      "name": "Student A1 View My Appointments",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{studentA1_token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/appointment/my",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["appointment", "my"]
+        },
+        "description": "Student A1 checks their appointments to verify no pending appointments remain"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    { 
+      "key": "studentA1_token", 
+      "value": "",
+      "type": "string"
+    },
+    { 
+      "key": "studentA2_token", 
+      "value": "",
+      "type": "string"
+    },
+    { 
+      "key": "professorP1_token", 
+      "value": "",
+      "type": "string"
+    },
+    { 
+      "key": "professorP1_id", 
+      "value": "68601751b02fc96ebe47b746",
+      "type": "string"
+    },
+    { 
+      "key": "appointmentA1_id", 
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
